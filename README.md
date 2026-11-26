@@ -1,29 +1,29 @@
 # cc-farm
 
-- A farm where a collie manages a flock of sheep workers.
-- Claude Code plugins for issue-driven, manager/worker task orchestration.
-- Tasks live as GitHub Issues, and each worker (sheep) takes one issue and turns it into a pull request.
-- The overall design lives in [issue #1](https://github.com/fucso/cc-farm/issues/1).
+- collie（牧羊犬）が sheep（羊）の群れを管理する牧場、という世界観の Claude Code プラグイン集。
+- GitHub Issue でタスクを管理し、マネージャーとワーカーで開発を回すための marketplace。
+- タスクは GitHub Issue に置き、ワーカー（sheep）が1頭につき1件の Issue をプルリクエストに変える。
+- 全体設計は [issue #1](https://github.com/fucso/cc-farm/issues/1) にある。
 
-## Install
+## インストール
 
 ```
 /plugin marketplace add fucso/cc-farm
 /plugin install sheep@cc-farm
 ```
 
-- The sheep plugin delegates its engineering workflow to pstack (poteto-mode), so install that too:
+- sheep プラグインは実装の進め方を pstack（poteto-mode）に委譲するので、そちらもインストールする:
 
 ```
 /plugin marketplace add michael-denyer/pstack-claude
 /plugin install pstack@pstack-claude
 ```
 
-## Use
+## 使い方
 
 ```
-/sheep:graze <issue-number>
+/sheep:graze <issue番号>
 ```
 
-- Reads the issue, implements it via poteto-mode, self-reviews with interrogate, opens a pull request, watches CI, and reports back on the issue.
-- It never merges; that is the shepherd's job.
+- Issue を読み、poteto-mode で実装し、interrogate で自己レビューし、プルリクエストを作成し、CI を見て、Issue に報告する。
+- マージはしない。それは shepherd（羊飼い）の仕事である。

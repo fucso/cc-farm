@@ -1,7 +1,7 @@
 {
   "name": "sheep",
   "version": "0.1.0",
-  "description": "Worker plugin for cc-farm. Its graze skill implements one GitHub Issue and opens a pull request, delegating the engineering workflow to pstack's poteto-mode.",
+  "description": "cc-farm のワーカー用プラグイン。graze スキルが GitHub Issue を1件実装してプルリクエストを作成し、実装の進め方は pstack の poteto-mode に委譲する。",
   "author": {
     "name": "fucso"
   }

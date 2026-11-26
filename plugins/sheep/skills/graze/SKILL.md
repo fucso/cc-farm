@@ -1,57 +1,57 @@
 ---
 name: graze
-description: Implement one GitHub Issue and open a pull request. Use when asked to work on a specific issue in this repository (e.g. "/sheep:graze 12" or "graze issue #12"). Delegates the implementation workflow to pstack's poteto-mode and the self-review to interrogate. Never merges.
-argument-hint: "[issue-number-or-url]"
+description: GitHub Issue を1件実装してプルリクエストを作成する。このリポジトリの特定の Issue への着手を頼まれたときに使う（例: "/sheep:graze 12"、"issue #12 を graze して"）。実装の進め方は pstack の poteto-mode に、自己レビューは interrogate に委譲する。マージはしない。
+argument-hint: "[issue番号またはURL]"
 ---
 
 # graze
 
-- One sheep, one issue: read a GitHub Issue, implement it, and open a pull request.
-- The engineering workflow is delegated to pstack; this skill owns only the entrance, the exit, and the guardrails.
+- 羊1頭につき Issue 1件: GitHub Issue を読み、実装して、プルリクエストを作成する。
+- 実装の進め方そのものは pstack に委譲し、このスキルは入口・出口・ガードレールだけを持つ。
 
-## Arguments
+## 引数
 
-- `issue` (required): the issue number or URL in the current repository, given as `$ARGUMENTS`.
-- If `issue` is missing, ask for it before doing anything else.
+- `issue`（必須）: 現在のリポジトリの Issue 番号または URL。`$ARGUMENTS` で受け取る。
+- `issue` が無い場合は、他のことをする前にまず聞く。
 
-## Prerequisites
+## 前提
 
-- The pstack plugin is installed (michael-denyer/pstack-claude), providing `/pstack:poteto-mode` and `/pstack:interrogate`.
-- `gh` is available and authenticated.
+- pstack プラグイン（michael-denyer/pstack-claude）がインストールされていて、`/pstack:poteto-mode` と `/pstack:interrogate` が使えること。
+- `gh` が利用可能で、認証済みであること。
 
-## Steps
+## 手順
 
-- **Read the issue**
-  - Run `gh issue view <issue>` and treat the issue title and body as the task.
-  - Check for an already-open pull request that references the issue.
-  - If one exists, stop and report instead of starting duplicate work.
-- **Branch first**
-  - Before writing any code, create a branch for this issue and link it to the issue.
-  - Prefer `gh issue develop <issue> --checkout` when available.
-  - Otherwise create a branch whose name contains the issue number, e.g. `issue-<issue>-<short-slug>`.
-- **Implement with poteto-mode**
-  - Invoke `/pstack:poteto-mode` with the issue title and body as the task.
-  - Add these completion conditions: the work ends with a pull request and green CI; merging is out of scope.
-  - Do not name a playbook; poteto-mode's router chooses it.
-  - Verification is poteto-mode's job, including its use of a project verify skill when the repository has one.
-  - If real verification is impossible in this environment, state that in the pull request body instead of faking evidence.
-- **Self-review**
-  - Run `/pstack:interrogate` on the diff.
-  - Fix what it files under "act on".
-  - Leave anything else that matters visible in the pull request body.
-- **Open the pull request**
-  - Keep commits small and reviewable.
-  - The body links the issue with `Closes #<issue>`, summarises the change, and records the verification evidence.
-  - Do not merge.
-- **Watch CI, then stop**
-  - Watch the pull request's checks and fix failures caused by your change.
-  - Report failures that are unrelated or environmental instead of chasing them.
-  - Once CI is green, stop watching; do not react to comments that arrive afterwards (that is mend's job).
-- **Report on the issue**
-  - Post one comment on the issue: the pull request link, what was done, how it was verified, and anything that blocked or remains.
+- **Issue を読む**
+  - `gh issue view <issue>` を実行し、Issue のタイトルと本文をタスクとして扱う。
+  - その Issue を参照する open なプルリクエストが既にないか確認する。
+  - 既にある場合は、重複して着手せず、その旨を報告して止まる。
+- **先にブランチを切る**
+  - コードを書く前に、その Issue 用のブランチを作って Issue と紐付ける。
+  - 使える場合は `gh issue develop <issue> --checkout` を優先する。
+  - それ以外の場合は、Issue 番号を含む名前のブランチを作る（例: `issue-<issue>-<短いスラッグ>`）。
+- **poteto-mode で実装する**
+  - Issue のタイトルと本文をタスクとして `/pstack:poteto-mode` を起動する。
+  - 完了条件として「プルリクエストの作成と CI グリーンで終わること、マージは対象外であること」を付け加える。
+  - playbook は指定しない。poteto-mode のルーターに選ばせる。
+  - 検証は poteto-mode の仕事であり、リポジトリに project の verify スキルがあればそれを使うのも poteto-mode 側の判断に含まれる。
+  - この環境で実検証が不可能な場合は、証跡を偽らず、その旨をプルリクエスト本文に明記する。
+- **自己レビューする**
+  - 差分に対して `/pstack:interrogate` を実行する。
+  - "act on" に分類された指摘は直す。
+  - それ以外で重要なものは、プルリクエスト本文に残して見えるようにする。
+- **プルリクエストを作成する**
+  - コミットは小さく、レビューしやすい単位に分ける。
+  - 本文には `Closes #<issue>` で Issue をリンクし、変更の概要と検証の証跡（実行したことと観測した結果）を書く。
+  - マージはしない。
+- **CI を見て、終わったら止まる**
+  - プルリクエストのチェックを監視し、自分の変更が原因の失敗は直す。
+  - 無関係な失敗や環境起因の失敗は、追いかけずに報告する。
+  - CI がグリーンになったら監視を終える。その後に届いたコメントには反応しない（それは mend の仕事）。
+- **Issue に報告する**
+  - Issue にコメントを1本残す: プルリクエストのリンク、やったこと、検証方法、詰まった点や残件。
 
-## Guardrails
+## ガードレール
 
-- Work only on the given issue; put ideas for other work in the report comment, not in the diff.
-- Never merge, and never close the issue by hand (the pull request's `Closes` does it).
-- If the issue is ambiguous, already done, or blocked by something you cannot resolve, stop and say why in an issue comment; a clear stop is a valid outcome.
+- 対象の Issue の範囲だけで作業する。他の作業のアイデアは差分に入れず、報告コメントに書く。
+- マージはしない。Issue を手で閉じない（プルリクエストの `Closes` が閉じる）。
+- Issue の内容が曖昧、既に完了している、または自分では解消できない理由でブロックされている場合は、止まって Issue コメントで理由を伝える。明確な停止も正常な結果である。

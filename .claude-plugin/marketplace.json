@@ -7,7 +7,7 @@
     {
       "name": "sheep",
       "source": "./plugins/sheep",
-      "description": "Worker plugin: one sheep works one GitHub Issue into a pull request."
+      "description": "ワーカー用プラグイン。sheep が GitHub Issue を1件担当してプルリクエストにする。"
     }
   ]
 }
