@@ -1,0 +1,8 @@
+{
+  "name": "sheep",
+  "version": "0.1.0",
+  "description": "Worker plugin for cc-farm. Its graze skill implements one GitHub Issue and opens a pull request, delegating the engineering workflow to pstack's poteto-mode.",
+  "author": {
+    "name": "fucso"
+  }
+}
