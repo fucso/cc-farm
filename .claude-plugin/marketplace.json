@@ -1,0 +1,13 @@
+{
+  "name": "cc-farm",
+  "owner": {
+    "name": "fucso"
+  },
+  "plugins": [
+    {
+      "name": "sheep",
+      "source": "./plugins/sheep",
+      "description": "Worker plugin: one sheep works one GitHub Issue into a pull request."
+    }
+  ]
+}
