@@ -23,16 +23,20 @@ argument-hint: "[issue番号またはURL]"
 
 1. Issue の確認
    - 次のコマンドで Issue を取得し、タイトルと本文をタスクとして扱う。
+
      ```
      gh issue view <issue>
      ```
+
    - その Issue を参照する open なプルリクエストが既にないか確認する。
    - 既にある場合は、重複して着手せず、その旨を報告して止まる。
 2. ブランチ作成
    - コードを書く前に、次のコマンドでその Issue 用のブランチを作って Issue と紐付ける。
+
      ```
      gh issue develop <issue> --checkout
      ```
+
 3. 実装
    - Issue のタイトルと本文をタスクとして /pstack:poteto-mode を起動する。
    - 完了条件として「プルリクエストの作成と CI グリーンで終わること、マージは対象外であること」を付け加える。
