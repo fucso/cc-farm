@@ -1,7 +1,7 @@
 ---
 name: common-sense
 description: farm の共有規約（状態モデル、状態遷移、依存、Issue 形式、Issue の規模、コメント規約、PR 規約、経緯の置き場所）を定義する。Issue のラベル・コメント・PR を扱う前や、Issue を起票する前に参照する。定義のみで、実行はしない。
-argument-hint: "[節名（任意）]"
+user-invocable: false
 ---
 
 # common-sense
@@ -9,42 +9,36 @@ argument-hint: "[節名（任意）]"
 - farm の各スキルが共通で参照する規約の定義。
 - このスキル自身は何も実行しない。規約を読んで、呼び出し元のスキルが従う。
 
-## 引数
-
-- 節名（任意）: 読みたい節の名前。$ARGUMENTS で受け取る。
-- 指定がなければ、全節を対象にする。
-
 ## 状態モデル
 
 - ステータスは `farm:` プレフィックスのラベルで表す。
 - ステータスのラベルは Issue にのみ付け、PR には付けない。
 - ステータスのラベルは常に1つまで。遷移時は新しいラベルを付けて古いラベルを外す（付け替え）。
-- ラベルの種類:
-  - `farm:ready`: 着手できる状態。
-  - `farm:blocked`: 未解決の依存があり、着手できない状態。
-  - `farm:in-progress`: エージェントが作業している状態。
-  - `farm:in-review`: PR ができ、人間のレビュー待ちの状態。
-  - `farm:needs-human`: 人間の判断が要る状態。
+- ラベルの種類と意味は、labels.json に定義している。
 - done はラベルを持たない。Issue が closed（completed）であることから導出する。
 
 ## 状態遷移
 
-- ready への遷移: muster が付ける。
-- in-progress への遷移:
-  - graze が、ブランチを Issue に紐付けると同時に付ける。
-  - mend が、着手時に付ける（changes requested からの復帰）。
-- in-review への遷移:
-  - graze が、終了時に付け替える。このとき PR を ready for review にする。
-  - mend が、終了時に付け替える。
-- blocked への遷移:
-  - 作業中に隠れた依存が見つかったら、graze は作業を終了して blocked に付け替える。
-  - 理由をコメントに書く。
-- needs-human への遷移:
-  - 人間の判断が要る問題が見つかったら、needs-human に付け替える。
-  - 理由をコメントに書く。
-- changes requested の扱い:
-  - roundup が、PR の reviewDecision から検出する。
-  - roundup が mend を dispatch し、mend が着手時に in-progress へ戻す。
+```mermaid
+stateDiagram-v2
+    state "farm:ready" as ready
+    state "farm:in-progress" as in_progress
+    state "farm:in-review" as in_review
+    state "farm:needs-human" as needs_human
+    state "farm:blocked" as blocked
+    [*] --> ready: muster が起票
+    ready --> in_progress: graze が着手
+    in_progress --> in_review: graze / mend が終了
+    in_progress --> needs_human: 人間の判断が要る問題を検出
+    in_review --> in_progress: changes requested を roundup が検出し、mend が着手
+    in_review --> [*]: マージして closed（completed）= done
+    ready --> blocked: open な blocker がある
+    blocked --> ready: blocker がすべて closed
+```
+
+- ready に遷移するのは muster だけ。
+- needs-human への遷移では、理由をコメントに書く。
+- changes requested は、PR の reviewDecision から roundup が検出する。
 - in-progress の Issue は、shepherd が触らない。
 
 ## 依存
@@ -56,27 +50,13 @@ argument-hint: "[節名（任意）]"
 
 ## Issue 形式
 
-- 節構成は次のとおり。
-  1. 目的
-  2. 背景・文脈
-  3. 要件
-  4. 完了条件
-  5. 範囲外
-  6. 未確定事項
-- 種別は、GitHub の issue type で表す。
-- 完了条件:
-  - チェックボックスで書く。
-  - 3つまでにする。
-- 設計は基本書かない。
-- プロジェクトの成長に関わる判断は、背景・文脈に記録する。
-- バグの Issue は、次の節構成に差し替える。
-  1. 再現手順（番号付き）
-  2. 期待する動作
-  3. 実際の動作
-  4. 環境とバージョン
-- テンプレートファイルは、このスキルの templates/ に同梱している。
+- 節構成は、テンプレートファイルに従う。
   - templates/task.md: 通常の Issue。
   - templates/bug.md: バグの Issue。
+- 種別は、GitHub の issue type で表す。
+- 完了条件は、チェックボックスで3つまでにする。
+- 設計は基本書かない。
+- プロジェクトの成長に関わる判断は、背景・文脈に記録する。
 
 ## Issue の規模
 
@@ -102,9 +82,7 @@ argument-hint: "[節名（任意）]"
 
 ## PR 規約
 
-- ブランチ名は自由。
 - PR はドラフトで作成する。
-- in-review への付け替え時に、ready for review にする。
 - 本文の形式は poteto-mode の規約に任せる。
 - 本文には、Issue との紐付け（Closes #<issue>）を必ず入れる。
 
