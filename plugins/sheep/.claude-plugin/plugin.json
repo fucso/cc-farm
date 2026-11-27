@@ -1,0 +1,14 @@
+{
+  "name": "sheep",
+  "version": "0.1.0",
+  "description": "cc-farm のワーカー用プラグイン。graze スキルが GitHub Issue を1件実装してプルリクエストを作成し、実装の進め方は pstack の poteto-mode に委譲する。",
+  "author": {
+    "name": "fucso"
+  },
+  "dependencies": [
+    {
+      "name": "pstack",
+      "marketplace": "pstack-claude"
+    }
+  ]
+}

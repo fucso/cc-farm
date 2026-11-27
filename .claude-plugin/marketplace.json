@@ -1,0 +1,16 @@
+{
+  "name": "cc-farm",
+  "owner": {
+    "name": "fucso"
+  },
+  "allowCrossMarketplaceDependenciesOn": [
+    "pstack-claude"
+  ],
+  "plugins": [
+    {
+      "name": "sheep",
+      "source": "./plugins/sheep",
+      "description": "ワーカー用プラグイン。sheep が GitHub Issue を1件担当してプルリクエストにする。"
+    }
+  ]
+}
