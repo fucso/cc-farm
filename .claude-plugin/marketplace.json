@@ -3,6 +3,9 @@
   "owner": {
     "name": "fucso"
   },
+  "allowCrossMarketplaceDependenciesOn": [
+    "pstack-claude"
+  ],
   "plugins": [
     {
       "name": "sheep",

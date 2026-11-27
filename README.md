@@ -9,15 +9,12 @@
 
 ```
 /plugin marketplace add fucso/cc-farm
+/plugin marketplace add michael-denyer/pstack-claude
 /plugin install sheep@cc-farm
 ```
 
-- sheep プラグインは実装の進め方を pstack（poteto-mode）に委譲するので、そちらもインストールする:
-
-```
-/plugin marketplace add michael-denyer/pstack-claude
-/plugin install pstack@pstack-claude
-```
+- sheep は pstack（poteto-mode）に依存している。plugin.json の `dependencies` で宣言しているため、sheep のインストール時に pstack も自動でインストールされる。
+- 自動インストールには、依存先の marketplace を先に追加しておくことと、cc-farm 側の marketplace.json で `allowCrossMarketplaceDependenciesOn` に `pstack-claude` を許可していることが必要。
 
 ## 使い方
 
