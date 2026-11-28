@@ -34,7 +34,7 @@ argument-hint: "[issue番号またはURL]"
    - その Issue を参照する open なプルリクエストが既にないか確認する。
    - 既にある場合は、重複して着手せず、その旨を報告して止まる。
 3. ブランチ作成と着手
-   - 次のスクリプトで、ブランチを作って Issue に紐付ける。
+   - 次のスクリプトで、ブランチを Issue に紐付ける。
 
      ```
      ${CLAUDE_SKILL_DIR}/scripts/start.sh <issue> <branch>
@@ -89,4 +89,4 @@ argument-hint: "[issue番号またはURL]"
 ## ガードレール
 
 - 対象の Issue の範囲だけで作業する。
-- マージはしない。Issue を手で閉じない（プルリクエストの Closes が閉じる）。
+- マージはしない。Issue を手で閉じない。
