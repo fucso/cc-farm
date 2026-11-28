@@ -1,0 +1,8 @@
+{
+  "name": "commons",
+  "version": "0.1.0",
+  "description": "cc-farm の共有規約プラグイン。common-sense スキルが、状態モデル・Issue 形式・コメント規約・PR 規約などを定義する。",
+  "author": {
+    "name": "fucso"
+  }
+}

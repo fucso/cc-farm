@@ -8,6 +8,11 @@
   ],
   "plugins": [
     {
+      "name": "commons",
+      "source": "./plugins/commons",
+      "description": "共有規約用プラグイン。common-sense スキルが farm の規約（状態モデル、Issue 形式、コメント規約、PR 規約など）を定義する。"
+    },
+    {
       "name": "sheep",
       "source": "./plugins/sheep",
       "description": "ワーカー用プラグイン。sheep が GitHub Issue を1件担当してプルリクエストにする。"

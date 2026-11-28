@@ -1,0 +1,22 @@
+[
+  {
+    "name": "farm:ready",
+    "description": "着手できる状態。"
+  },
+  {
+    "name": "farm:blocked",
+    "description": "open な blocker があり、着手できない状態。"
+  },
+  {
+    "name": "farm:in-progress",
+    "description": "エージェントが作業している状態。"
+  },
+  {
+    "name": "farm:in-review",
+    "description": "PR ができ、人間のレビュー待ちの状態。"
+  },
+  {
+    "name": "farm:needs-human",
+    "description": "人間の判断が要る状態。"
+  }
+]
